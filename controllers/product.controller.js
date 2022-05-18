@@ -6,25 +6,26 @@ var express = require("express");
 var router = express.Router();
 
 router.get("/", (req, res) => {
-  connection.query("select * from product"),
-    (err, records, fileds) => {
-      if (err) {
-        console.error("Error while fetching data!");
-      } else {
-        res.send(records);
-      }
-    };
+  connection.query("select * from product", (err, records, fileds) => {
+    if (err) {
+      console.error("Error while fetching data!");
+    } else {
+      res.send(records);
+    }
+  });
 });
 
 router.get("/:id", (req, res) => {
-  connection.query("select * from product where id=" + req.params.id),
+  connection.query(
+    "select * from product where id=" + req.params.id,
     (err, records, fileds) => {
       if (err) {
         console.error("Error while fetching data!");
       } else {
         res.send(records);
       }
-    };
+    }
+  );
 });
 
 router.post("/", (req, res) => {
@@ -33,18 +34,10 @@ router.post("/", (req, res) => {
   var description = req.body.description;
   var price = req.body.price;
   connection.query(
-    "insert into product(id,name,description,price) values(" +
-      id +
-      "','" +
-      name +
-      "','" +
-      description +
-      "','" +
-      price +
-      ")",
+    `insert into product values('${id}','${name}','${description}','${price}')`,
     (err, result) => {
       if (err) {
-        console.err("erro while inserting data" + err);
+        console.error("erro while inserting data" + err);
       } else {
         res.send({ insert: "success" });
       }
